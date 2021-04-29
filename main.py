@@ -119,6 +119,4 @@ async def add_oc(message, *, name = None):
                 return await message.send(f"**{Name}** has been added, **{Name}'s** ID is **{ID}**")
         write_json(OCs_Data)
 
-keep_alive.keep_alive()
-
 client.run('NzgxMjI0NzU4MzU1ODIwNTU1.X76iQA.v4acbks4IfWAJ4ru0aDtym3vHN8')
