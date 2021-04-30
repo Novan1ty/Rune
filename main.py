@@ -24,13 +24,20 @@ async def on_member_remove(Member):
     channel = client.get_channel('786716364248842301')
     await channel.send('Bye')
 
-
 @client.event
-async def Pog(message):
-    if (message.have.lower() == 'pog'):
-        await message.add_reaction('🅿')
-        await message.add_reaction('🅿')
-        await message.add_reaction('🅿')
+async def on_message(message):
+    if message.content.lower() == 'pog':
+        await message.add_reaction('🇵')
+        await message.add_reaction('🇴')
+        await message.add_reaction('🇬')
+    if message.content.lower() == 'poggers':
+        await message.add_reaction('🇵')
+        await message.add_reaction('🇴')
+        await message.add_reaction('🇬')
+        await message.add_reaction('☪️')
+        await message.add_reaction('🇪')
+        await message.add_reaction('🇷')
+        await message.add_reaction('🇸')
 
 # ---------------------------------------------------------
 
@@ -40,17 +47,15 @@ async def ping(Rune):
     await Rune.send(embed=Ping)
 
 @client.command()
-async def say(Rune, *, args = None):
+async def say(Rune, args = None):
     if args is not None:
-        Message_To_Say = args.replace("(", "")
-        Message_To_Say = args.replace(")", "")
 
-        await Rune.send(Message_To_Say)
+        await Rune.send(args)
     else:
         await Rune.send('You have to provide something for Rune to say.\n`R!say <Text>`')
 
 @client.command()
-async def owofy(message, *, args = None):
+async def owofy(message, args = None):
     if args is not None:
         th = args.replace("th", "w")
         L = th.replace("l", "w")
@@ -62,7 +67,7 @@ async def owofy(message, *, args = None):
         await message.send('You have to provide something for Rune to say.\n`R!owofy <Text>`')
 
 @client.command()
-async def claptext(message, *, args = None):
+async def claptext(message, args = None):
     if args is not None:
         Message_To_Clap_Text = args.replace(" ", " 👏 ")
 
@@ -70,52 +75,25 @@ async def claptext(message, *, args = None):
     else:
         await message.send('You have to provide something for Rune to say.\n`R!claptext <Text>`')
 
-def write_json(data, filename="OCs.json"):
-    with open (filename, "w") as f:
-        json.dump(data, f, indent=4)
 @client.command()
-
-async def add_oc(message, *, name = None):
+async def add_oc(message, name = None):
     if name is None:
         return await message.send('You have to provide the name of your OC.\n`R!add_oc <Name>`')
-        
-    if name is not None:
-        Name = name
-        ID = random.randint(1, 1000)
+    
+    Name = name
+    ID = random.randint(1, 1000)
+    
+    def add_oc_data():
+        data = {}
+        with open ("OCs.json", "r") as f:
+            _data = json.load(f)
+        data["Author"] = message.author.id
+        data["OC_Name"] = Name
+        data["OC_ID"] = ID
+        _data.append(data)
+        with open ("OCs.json", "w") as f:
+            json.dump(_data, f, indent=4)
+    add_oc_data()
+    return await message.send(f"**{Name}** has been added, **{Name}'s** ID is **{ID}**")
 
-        with open ('OCs.json') as OC_Storage:
-            OCs_Data = json.load(OC_Storage)
-            Author = OCs_Data[f"{message.author.id}"]
-
-            if Author is not None:
-                OC = {
-                    "OC_Name": Name,
-                    "OC_ID": ID
-                }
-                
-                Author.append(OC)
-
-                write_json(OCs_Data)
-
-                return await message.send(f"**{Name}** has been added, **{Name}'s** ID is **{ID}**")
-            else:
-                New_Author = OCs_Data['}']
-
-                OC = {
-                    {
-                        f"{message.author.id}": [
-                            {
-                                "OC_Name": Name,
-                                "OC_ID": random.randint(1, 1000)
-                            }
-                        ]
-                    }
-                }
-                New_Author.append(OC)
-
-                write_json(OCs_Data)
-
-                return await message.send(f"**{Name}** has been added, **{Name}'s** ID is **{ID}**")
-        write_json(OCs_Data)
-
-client.run('NzgxMjI0NzU4MzU1ODIwNTU1.X76iQA.v4acbks4IfWAJ4ru0aDtym3vHN8')
+client.run('Nothing for now')
