@@ -1,3 +1,5 @@
+# CANCELLED - 5/1/21; May 1, 2021
+
 import discord
 from discord.ext import commands
 
@@ -7,8 +9,9 @@ import random
 intents = discord.Intents.default()
 intents.members = True
 
-client = commands.Bot(command_prefix = 'R!', intents = intents)
+filename = "OCs.json"
 
+client = commands.Bot(command_prefix = 'R!', intents = intents)
 @client.event
 async def on_ready():
     await client.change_presence(status = discord.Status.online, activity = discord.Game('R!ping - rune-discord.web.app'))
@@ -25,11 +28,14 @@ async def on_member_remove(Member):
     await channel.send('Bye')
 
 @client.event
-async def on_message(message):
+async def pog(message):
     if message.content.lower() == 'pog':
         await message.add_reaction('🇵')
         await message.add_reaction('🇴')
         await message.add_reaction('🇬')
+
+@client.event
+async def poggers(message):
     if message.content.lower() == 'poggers':
         await message.add_reaction('🇵')
         await message.add_reaction('🇴')
@@ -75,25 +81,38 @@ async def claptext(message, args = None):
     else:
         await message.send('You have to provide something for Rune to say.\n`R!claptext <Text>`')
 
-@client.command()
+@client.command() # Achieved at 7:14 pm on 4/30/21
 async def add_oc(message, name = None):
     if name is None:
         return await message.send('You have to provide the name of your OC.\n`R!add_oc <Name>`')
     
     Name = name
-    ID = random.randint(1, 1000)
-    
-    def add_oc_data():
+    async def add_oc_data():
         data = {}
         with open ("OCs.json", "r") as f:
             _data = json.load(f)
-        data["Author"] = message.author.id
+            ID = len(_data) + 1
+
+        data["Author"] = f"{message.author.id}"
         data["OC_Name"] = Name
-        data["OC_ID"] = ID
+        data["OC_ID"] = f"{ID}"
         _data.append(data)
         with open ("OCs.json", "w") as f:
             json.dump(_data, f, indent=4)
-    add_oc_data()
-    return await message.send(f"**{Name}** has been added, **{Name}'s** ID is **{ID}**")
+        await message.send(f"**{Name}** has been added, **{Name}'s** ID is **{ID}**")
+    return await add_oc_data()
 
-client.run('Nothing for now')
+@client.command()
+async def remove_oc(message, ID = None):
+    if ID is None:
+        return await message.send('You have to provide an name of your OC.\n`R!remove_oc <ID>`')
+
+    def delete_data():
+        new_data = []
+        with open (filename, "r") as f:
+            _data = json.load(f)
+        with open (filename, "w") as f:
+            json.dump(new_data, f, indent=4)
+    delete_data()
+
+client.run('NzgxMjI0NzU4MzU1ODIwNTU1.X76iQA.JNDq3Ok_HGPiSnL--6iqsxm61LU')
