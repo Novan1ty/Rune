@@ -156,6 +156,17 @@ version = "3.10.0.0"
 
 [[package]]
 category = "main"
+description = "A Wrapper for vacefron.nl/api written in Python."
+name = "vacefron.py"
+optional = false
+python-versions = ">=3.6"
+version = "1.6.2"
+
+[package.dependencies]
+aiohttp = "*"
+
+[[package]]
+category = "main"
 description = "The comprehensive WSGI web application library."
 name = "werkzeug"
 optional = false
@@ -179,7 +190,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "67179e68f36674eb3800ba17a69b0effefe435e61bc749fad79640b809325a2e"
+content-hash = "1dec9e443c4323ee39d4a807e8b240d151ddc4cc97d2505226e1e4194e0b533c"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -359,6 +370,10 @@ typing-extensions = [
     {file = "typing_extensions-3.10.0.0-py2-none-any.whl", hash = "sha256:0ac0f89795dd19de6b97debb0c6af1c70987fd80a2d62d1958f7e56fcc31b497"},
     {file = "typing_extensions-3.10.0.0-py3-none-any.whl", hash = "sha256:779383f6086d90c99ae41cf0ff39aac8a7937a9283ce0a414e5dd782f4c94a84"},
     {file = "typing_extensions-3.10.0.0.tar.gz", hash = "sha256:50b6f157849174217d0656f99dc82fe932884fb250826c18350e159ec6cdf342"},
+]
+"vacefron.py" = [
+    {file = "vacefron.py-1.6.2-py3-none-any.whl", hash = "sha256:fe4eefc76c9177c4e452657b2eaffe585e7c46bf45a1c30be2fc1367eabfd834"},
+    {file = "vacefron.py-1.6.2.tar.gz", hash = "sha256:ff2c0468a2018cddfa316fd04d9fc23a1e86e8e0926b0d8deddaaba48c1b2fe6"},
 ]
 werkzeug = [
     {file = "Werkzeug-1.0.1-py2.py3-none-any.whl", hash = "sha256:2de2a5db0baeae7b2d2664949077c2ac63fbd16d98da0ff71837f7d1dea3fd43"},
