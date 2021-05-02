@@ -115,4 +115,4 @@ async def remove_oc(message, ID = None):
             json.dump(new_data, f, indent=4)
     delete_data()
 
-client.run('NzgxMjI0NzU4MzU1ODIwNTU1.X76iQA.JNDq3Ok_HGPiSnL--6iqsxm61LU')
+client.run('TOKEN')
