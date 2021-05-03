@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 
+import random
+
 async def Rune(message):
     async def message_content(content, response):
         if message.content.lower() == f"{content}":
@@ -34,3 +36,18 @@ async def Rune(message):
     
     Mean  = [ 'ugly', 'hideous', 'nerd', 'moron', 'stupid' ]
     await loop_message(Mean, "Hey look a jerk <:gun:830351533744193536> <:LaughsATYOU:830350872760418335>")
+
+    Good = [
+        'good', 'attractive', 'beautiful', 'wonderful',
+        'stunning', 'elegant', 'bold', 'Angelic', 'hracious',
+        'spirited', 'charming', 'majestic', 'brilliant',
+        'amazing', 'lovely'
+    ]
+    Wholesome = [
+        'A wholesome moment right here :)',
+        'Indeed',
+        'Agreed',
+        'Now kiss (unless you\'re talking about a non-living object)',
+        'Now get married (unless you\'re talking about a non-living object)'
+    ]
+    await loop_message(Good, random.choice(Wholesome))
