@@ -1,8 +1,12 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import has_permissions, MissingPermissions
 
 import express
 express.get_port()
+
+import json
+OCs_Storage = "OCs.json"
 
 import random
 import vacefron
@@ -65,11 +69,15 @@ async def on_command_error(message, error):
     async def invalid_channel(response):
         if isinstance(error, commands.ChannelNotFound):
             return await message.send(embed=response)
-
+    async def no_permission(response):
+        if isinstance(error, MissingPermissions):
+            return await message.send(embed=response)
     Require = discord.Embed(title='You have to follow the requirements.', color=0x87f587)
+    No_Permission = discord.Embed(title='You don\'t have the permission to use this command.', color=0x87f587)
 
     await invalid_user(Require)
     await invalid_channel(Require)
+    await no_permission(No_Permission)
 
 # ---------------------------------------------------------
 
@@ -156,13 +164,86 @@ async def sparkle_text(message, *, args = None):
 @client.command()
 async def say_in(message, channel: discord.TextChannel = None, *, args = None):
     if channel is None:
-        Provide = discord.Embed(description='```R!say_in <Text> <Channel>```', color=0x87f587)
+        Provide = discord.Embed(description='```R!say_in <Channel> <Text>```', color=0x87f587)
         return await message.send('You need to mention a channel for Rune to say in.', embed=Provide)
 
     if args is None:
-        Provide = discord.Embed(description='```R!say_in <Text> <Channel>```', color=0x87f587)
+        Provide = discord.Embed(description='```R!say_in <Channel> <Text>```', color=0x87f587)
         return await message.send('You have to provide something for Rune to say.', embed=Provide)
 
-    return await channel.send(args)
+    await channel.send(args)
+    return await message.send('Message sent.')
+
+@client.command()
+async def compliment(message, member: discord.Member):
+    from Exports import Compliment
+
+    if member:
+        return await message.send(f'{member.mention} {Compliment.Compliment()}')
+
+    return await message.send(f'{message.author.mention} {Compliment.Compliment()}')
+
+@client.command()
+@has_permissions(manage_messages=True)
+async def say_to(message, member: discord.Member = None, *, args = None):
+    if member is None:
+        Provide = discord.Embed(description='```R!say_to <User> <Text>```', color=0x87f587)
+        return await message.send('You need to mention a user.', embed=Provide)
+
+    if args is None:
+        Provide = discord.Embed(description='```R!say_to <User> <Text>```', color=0x87f587)
+        return await message.send('You have to provide something for Rune to say.', embed=Provide)
+
+    await member.send(args)
+    return await message.send('Message sent.')
+
+# Recontinue of Recreation of JSON as Database in Python ~ 5/7/21; May 7, 2021
+
+@client.command()
+async def add_oc(message, *, Name = None):
+    Provide = discord.Embed(description='```R!add_oc <Name> [Avatar]```', color=0x87f587)
+
+    if Name is None:
+        return await message.send('You have to provide the name of your OC.', embed=Provide)
+
+    OC = {}
+    with open (OCs_Storage, "r") as _OCs:
+        OCs = json.load(_OCs)
+        ID = len(OCs) + 1
+    OC["Author"] = f"{message.author.id}"
+    OC["OC_Name"] = Name
+    OC["OC_ID"] = ID
+    # OC["OC_Avatar"] = 
+    OCs.append(OC)
+    with open (OCs_Storage, "w") as _OCs:
+        json.dump(OCs, _OCs, indent=4)
+    
+    return await message.send(f"**{Name}** has been added, **{Name}'s** ID is **{ID}**.")
+
+@client.command()
+async def search_oc(message, *, ID = None):
+    Provide = discord.Embed(description='```R!search_oc <ID>```', color=0x87f587)
+    if ID is None:
+        return await message.send('You have to provide the ID of the OC you want to search for.', embed=Provide)
+
+    def specific_data(OC_ID):
+        with open (OCs_Storage, "r") as OCs:
+            _OC_ = json.load(OCs)
+            return next((_OC for _OC in _OC_ if _OC["OC_ID"] == int(OC_ID)), None)
+
+    OC = specific_data(ID)
+    if OC is None:
+        return await message.send('There is no OC with that was found with that ID.')
+    else:
+        OC_Name = OC["OC_Name"]
+        OC_ID = OC["OC_ID"]
+        OC_Author = OC["Author"]
+
+        OC_ = discord.Embed(description=f"```An OC was found with the name {OC_Name}```", color=0x87f587)
+        OC_.set_author(name=message.author.name, icon_url=f"{message.author.avatar_url}")
+        OC_.add_field(name='Name:', value=f"{OC_Name}", inline=True)
+        OC_.add_field(name='ID:', value=f"{OC_ID}", inline=True)
+        OC_.set_footer(text=f"{OC_Author}")
+        return await message.send(embed=OC_)
 
 client.run('NzgxMjI0NzU4MzU1ODIwNTU1.X76iQA.JNDq3Ok_HGPiSnL--6iqsxm61LU')
