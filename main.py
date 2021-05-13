@@ -1,9 +1,10 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
-
 import express
 express.get_port()
+
+import os
 
 import json
 OCs_Storage = "OCs.json"
@@ -246,4 +247,4 @@ async def search_oc(message, *, ID = None):
         OC_.set_footer(text=f"{OC_Author}")
         return await message.send(embed=OC_)
 
-client.run('NzgxMjI0NzU4MzU1ODIwNTU1.X76iQA.JNDq3Ok_HGPiSnL--6iqsxm61LU')
+client.run(os.environ['Token'])
