@@ -1,7 +1,7 @@
-# Rune-Discord.py
+# Rune-Python
 
 ## Description
-Rune is a small project where the goal is to recreate JSON as a database and recreate a small amount of commands that i have in my bot named °Mitch°•.
+**Rune is now a small project for recreating a small amount of commands that i have in my bot named °Mitch°•.**
 
 - - -
 
@@ -12,3 +12,7 @@ The Recreation of JSON as a Database in Python has been recontinued, and the rea
 * I've researched more and deep into the vast of internet.
 * I figured out and found more tricks to make this as simple like Javascript.
 * Started to study more about Classic Python.
+
+- - -
+
+Creator: Intense/Rune#1148
