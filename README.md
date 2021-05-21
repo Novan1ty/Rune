@@ -3,8 +3,6 @@
 ## Description
 **Rune is now a small project for recreating a small amount of commands that i have in my bot named °Mitch°•.**
 
-- - -
-
 Creator: `Novanity#1148`
 
 - - -
