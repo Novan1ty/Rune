@@ -1,8 +1,7 @@
 # Rune-Discord.py
 
 ## Description
-Rune is now a small project for recreating a small amount of commands that i have in my bot
-named °Mitch°•.
+Rune is a small project where the goal is to recreate JSON as a database and recreate a small amount of commands that i have in my bot named °Mitch°•.
 
 - - -
 

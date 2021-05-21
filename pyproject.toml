@@ -9,6 +9,7 @@ python = "^3.8"
 flask = "^1.1.2"
 "vacefron.py" = "1.6.2"
 "discord.py" = "^1.7.2"
+requests = "^2.25.1"
 
 [tool.poetry.dev-dependencies]
 

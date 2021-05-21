@@ -1,0 +1,1 @@
+# await message.message.delete()
