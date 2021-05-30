@@ -2,7 +2,7 @@
 name = "repl_python3_Rune-Discordpy"
 version = "0.1.1"
 description = ""
-authors = ["NovaGalaxii <<>>"]
+authors = ["Novan1ty <<>>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"

@@ -7,8 +7,14 @@ Creator: `Novanity#1148`
 
 - - -
 
+## Date of Creation
+11/25/20; November 25, 2021
+
+- - -
+
 ## ***Update ~ May 2, 2021***
-The Recreation of JSON as a Database in Python has been cancelled; Characters Feature has been cancelled. <br>
+The Recreation of JSON as a Database in Python has been cancelled; Characters Feature has been cancelled.
+
 ## ***Update ~ May 7, 2021***
 The Recreation of JSON as a Database in Python has been recontinued, and the reasons are:
 * I've researched more and deep into the vast of internet.
