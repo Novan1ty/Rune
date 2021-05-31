@@ -13,7 +13,6 @@ import random
 import json
 import time
 import requests
-import datetime
 
 intents = discord.Intents.default()
 intents.members = True
@@ -229,7 +228,7 @@ async def say_to(message, member: discord.Member = None, *, args = None):
         return await message.send(embed=Mention)
 
     if args is None:
-        return await message.send(embed=Provide)
+        return await message.send(embed=Provide_Message)
 
     await member.send(args)
 
@@ -351,7 +350,6 @@ async def oc_say(message, ID = None, *, args = None):
         return await message.send('There is no OC with that was found with that ID.')
 
     OC_Name = OC["OC_Name"]
-    OC_ID = OC["OC_ID"]
     OC_Author = OC["Author"]
     OC_Avatar = OC["OC_Avatar"]
 
