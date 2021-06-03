@@ -259,10 +259,16 @@ def delete_ocs(Author_ID):
     _OC_[:] = (OC for OC in _OC_ if OC.get('Author') != int(Author_ID))
     with open(OCs_Storage, "w") as OCs:
         return json.dump(_OC_, OCs, indent=4)
+def listToString(list): # ~ 6/3/21; June 3, 2021
+    Line_Break = "\n"
+    return Line_Break.join(list)
+def listNumToStr(list): # ~ 6/3/21; June 3, 2021
+    Line_Break = "\n"
+    return Line_Break.join([str(num) for num in list])
 
 @client.command()
 async def add_oc(message, *, Name = None):
-    Provide_Name = discord.Embed(title='You have to provide the name of your OC.', description='```R!add_oc <Name> [Avatar]```', color=0x87f587)
+    Provide_Name = discord.Embed(title='You have to provide the name for your OC.', description='```R!add_oc <Name> [Avatar]```', color=0x87f587)
     Provide_Avatar = discord.Embed(title='You have to provide the avatar for your OC.', description='```R!add_oc <Name> [Avatar]```', color=0x87f587)
 
     Avatar = None if len(message.message.attachments) == 0 else message.message.attachments[0].url
@@ -293,13 +299,15 @@ async def add_oc(message, *, Name = None):
 
 @client.command()
 async def search_oc(message, *, ID = None):
-    Provide = discord.Embed(description='```R!search_oc <ID>```', color=0x87f587)
+    Provide_ID = discord.Embed(title='You have to provide the ID of the OC you want to search for.', description='```R!search_oc <ID>```', color=0x87f587)
     if ID is None:
-        return await message.send('You have to provide the ID of the OC you want to search for.', embed=Provide)
+        return await message.send(embed=Provide_ID)
 
     OC = get_oc(ID)
+
+    No_OC = discord.Embed(description='```There is no OC that you own with that ID.```', color=0x87f587)
     if OC is None:
-        return await message.send('There is no OC with that was found with that ID.')
+        return await message.send(embed=No_OC)
 
     OC_Name = OC["OC_Name"]
     OC_ID = OC["OC_ID"]
@@ -307,7 +315,7 @@ async def search_oc(message, *, ID = None):
     OC_Author = OC["Author"]
 
     if OC_Author != message.author.id:
-        return await message.send('There is no OC with that was found with that ID.')
+        return await message.send(embed=No_OC)
 
     OC_ = discord.Embed(description=f"```An OC was found with the name {OC_Name}```", color=0x87f587)
     OC_.set_author(name=message.author.name, icon_url=message.author.avatar_url)
@@ -320,44 +328,52 @@ async def search_oc(message, *, ID = None):
 
 @client.command()
 async def remove_oc(message, *, ID = None):
-    Provide = discord.Embed(description='```R!remove_oc <ID>```', color=0x87f587)
+    Provide_ID = discord.Embed(title='You have to provide the ID of the OC you want to remove.', description='```R!remove_oc <ID>```', color=0x87f587)
     if ID is None:
-        return await message.send('You have to provide the ID of the OC you want to remove.', embed=Provide)
+        return await message.send(embed=Provide_ID)
 
     _OC = get_oc(ID)
+
+    No_OC = discord.Embed(description='```There is no OC that you own with that ID.```', color=0x87f587)
     if _OC is None:
-        return await message.send('There is no OC with that was found with that ID.')
+        return await message.send(embed=No_OC)
 
     OC_Name = _OC["OC_Name"]
     OC_Author = _OC["Author"]
 
     if OC_Author != message.author.id:
-        return await message.send('There is no OC with that was found with that ID.')
+        return await message.send(embed=No_OC)
 
-    await message.send(f"{OC_Name} has been removed.")
+    Success = discord.Embed(description=f"{OC_Name} has been removed.", color=0x87f587)
+    Success.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+    await message.send(embed=Success)
 
     return delete_oc(ID)
 
 
 @client.command()
 async def oc_say(message, ID = None, *, args = None):
-    Provide = discord.Embed(description='```R!oc_say <ID> <Message>```', color=0x87f587)
+    Provide_ID = discord.Embed(title='You have to provide the ID of the OC you want to talk as.', description='```R!oc_say <ID> <Message>```', color=0x87f587)
+    Provide_ID = discord.Embed(title='You have to provide a message for your OC to say.', description='```R!oc_say <ID> <Message>```', color=0x87f587)
+
     if ID is None:
-        return await message.send('You have to provide the ID of the OC you want to talk as.', embed=Provide)
+        return await message.send(embed=Provide_ID)
 
     OC = get_oc(ID)
+
+    No_OC = discord.Embed(description='```There is no OC that you own with that ID.```', color=0x87f587)
     if OC is None:
-        return await message.send('There is no OC with that was found with that ID.')
+        return await message.send(embed=No_OC)
 
     OC_Name = OC["OC_Name"]
     OC_Author = OC["Author"]
     OC_Avatar = OC["OC_Avatar"]
 
     if OC_Author != message.author.id:
-        return await message.send('There is no OC with that was found with that ID.')
+        return await message.send(embed=No_OC)
 
     if args is None:
-        return await message.send('You have to provide a message for your OC to say.', embed=Provide)
+        return await message.send(embed=Provide_Message)
     
     await message.message.delete()
 
@@ -367,7 +383,7 @@ async def oc_say(message, ID = None, *, args = None):
     await _OC_.send(args)
 
     time.sleep(3)
-    await _OC_.delete()
+    return await _OC_.delete()
 
 
 @client.command()
@@ -381,15 +397,26 @@ async def list_ocs(message): # ~ 5/25/21; May 25, 2021
         return await message.send(embed=No_OCs)
 
     # print(OCs["OC_Name"]) ~ 5/25/21; May 25, 2021
+    _OCs_Names = []
     for OCs in OC:
-        OCs_Names = OCs["OC_Name"]
-        
-        _OCs_ = discord.Embed(title=f"[ {message.author.name}'s OCs ]", color=0x87f587)
-        _OCs_.set_author(name=message.author.name, icon_url=message.author.avatar_url)
-        _OCs_.add_field(name='Name:', value=OCs_Names, inline=True)
-        # OCs.add_field(name='ID:', value=OCs_IDs, inline=True)
-        _OCs_.set_footer(text=f"Author's ID - {message.author.id}")
-        await message.send(embed=_OCs_)
+        OCs_Names_ = OCs["OC_Name"]
+        _OCs_Names.append(OCs_Names_)
+    
+    _OCs_IDs = []
+    for OCs in OC:
+        OCs_IDs_ = OCs["OC_ID"]
+        _OCs_IDs.append(OCs_IDs_)
+
+    OCs_Names = listToString(_OCs_Names)
+    # print(OCs_Names) ~ 6/3/21; June 3, 2021
+    OCs_IDs = listNumToStr(_OCs_IDs)
+    
+    _OCs_ = discord.Embed(title=f"[ {message.author.name}'s OCs ]", color=0x87f587)
+    _OCs_.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+    _OCs_.add_field(name='Name:', value='```\n' + OCs_Names + '```', inline=True)
+    _OCs_.add_field(name='ID:', value='```\n' + OCs_IDs + '```', inline=True)
+    _OCs_.set_footer(text=f"Author's ID - {message.author.id}")
+    return await message.send(embed=_OCs_)
 
 
 @client.command()
@@ -403,6 +430,8 @@ async def clear_ocs(message):
 
     delete_ocs(message.author.id)
 
-    return await message.send('Your OCs has been removed.')
+    Success = discord.Embed(description='```Your OCs has been removed.```', color=0x87f587)
+    Success.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+    return await message.send(embed=Success)
 
 client.run('NzgxMjI0NzU4MzU1ODIwNTU1.X76iQA.r8t22ybi31GM0j3qhhR52485vO4')
