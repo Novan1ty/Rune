@@ -1,6 +1,9 @@
 # Rune-Python
 
 ## Description
+Rune is a bot that jokes around the server and also has a small amount of **"Communication"** commands.
+
+## About
 **Rune is now a small project for recreating a small amount of commands that i have in my bot named °Mitch°•.**
 
 Creator: `Novanity#1148`

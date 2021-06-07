@@ -1,32 +1,8 @@
 [
     {
-        "Author": 564145650736955402,
-        "OC_Name": "Rune",
-        "OC_ID": 1,
-        "OC_Avatar": "https://cdn.discordapp.com/attachments/837243636663975936/848537204481458176/Rune.png"
-    },
-    {
-        "Author": 564145650736955402,
-        "OC_Name": "Luna",
-        "OC_ID": 2,
-        "OC_Avatar": "https://cdn.discordapp.com/attachments/837243636663975936/848538681786105866/Luna.jpg"
-    },
-    {
         "Author": 782851049316024360,
         "OC_Name": "Rea",
         "OC_ID": 3,
         "OC_Avatar": "https://cdn.discordapp.com/attachments/837243636663975936/848539102046978048/Rea_2.jpg"
-    },
-    {
-        "Author": 564145650736955402,
-        "OC_Name": "Mitch",
-        "OC_ID": 4,
-        "OC_Avatar": "https://cdn.discordapp.com/attachments/837243636663975936/848539988547338260/Mitch.jpg"
-    },
-    {
-        "Author": 564145650736955402,
-        "OC_Name": "Stella",
-        "OC_ID": 5,
-        "OC_Avatar": "https://cdn.discordapp.com/attachments/837243636663975936/848547917634600980/Stella.png"
     }
 ]
