@@ -5,7 +5,9 @@ from discord.ext.commands import has_permissions, MissingPermissions
 import express
 express.get_port()
 
-OCs_Storage = "OCs.json"
+OCs_Storage = "./Storages/OCs.json"
+Annoys_Storage = "./Storages/Annoys.json"
+Warnings_Storage = "./Storages/Warnings.json"
 
 from RuneChats import Rune
 import vacefron
@@ -13,6 +15,7 @@ import random
 import json
 import time
 import requests
+from Exports import Communication
 
 intents = discord.Intents.default()
 intents.members = True
@@ -20,6 +23,10 @@ intents.members = True
 client = commands.Bot(command_prefix='R!', intents=intents)
 vac = vacefron.Client()
 
+def get_author_id(Storage, Author_ID):
+    with open(Storage, "r") as Data:
+        _Data_ = json.load(Data)
+        return next((_Data for _Data in _Data_ if _Data[f"Member_ID"] == int(Author_ID)), None)
 
 @client.event
 async def on_message(message):
@@ -29,8 +36,11 @@ async def on_message(message):
     await Rune.Rune(message)
     await client.process_commands(message)
 
-# ---------------------------------------------------------
+    Annoy = get_author_id(Annoys_Storage, message.author.id)
+    if Annoy and (Annoy["Guild_ID"] == message.guild.id):
+        await message.channel.send(Annoy["Message"])
 
+# ---------------------------------------------------------
 
 @client.event
 async def on_ready():
@@ -196,7 +206,6 @@ async def say_in(message, channel: discord.TextChannel = None, *, args = None):
 
     if channel is None:
         return await message.send(embed=Mention)
-
     if args is None:
         return await message.send(embed=Provide_Message)
 
@@ -209,13 +218,11 @@ async def say_in(message, channel: discord.TextChannel = None, *, args = None):
 
 
 @client.command()
-async def compliment(message, member: discord.Member):
-    from Exports import Compliment
-
+async def compliment(message, member: discord.Member = None):
     if member:
-        return await message.send(f'{member.mention} {Compliment.Compliment()}')
+        return await message.send(f'{member.mention} {Communication.Compliment()}')
 
-    return await message.send(f'{message.author.mention} {Compliment.Compliment()}')
+    return await message.send(f'{message.author.mention} {Communication.Compliment()}')
 
 
 @client.command()
@@ -226,7 +233,6 @@ async def say_to(message, member: discord.Member = None, *, args = None):
     
     if member is None:
         return await message.send(embed=Mention)
-
     if args is None:
         return await message.send(embed=Provide_Message)
 
@@ -243,28 +249,93 @@ def get_oc(OC_ID):
     with open(OCs_Storage, "r") as OCs:
         _OC_ = json.load(OCs)
         return next((_OC for _OC in _OC_ if _OC["OC_ID"] == int(OC_ID)), None)
-def delete_oc(OC_ID):
-    with open(OCs_Storage, "r") as OCs:
-        _OC_ = json.load(OCs)
-    _OC_[:] = (OC for OC in _OC_ if OC.get('OC_ID') != int(OC_ID))
-    with open(OCs_Storage, "w") as OCs:
-        return json.dump(_OC_, OCs, indent=4)
+def remove_dict(Storage, Key, Value):
+    with open(Storage, "r") as Datas:
+        _Data_ = json.load(Datas)
+    _Data_[:] = (Data for Data in _Data_ if Data.get(f"{Key}") != Value)
+    with open(Storage, "w") as Datas:
+        return json.dump(_Data_, Datas, indent=4)
 def get_author(Author_ID):
     with open(OCs_Storage, "r") as OCs:
         _OC_ = json.load(OCs)
         return [_OC for _OC in _OC_ if _OC["Author"] == int(Author_ID)]
-def delete_ocs(Author_ID):
-    with open(OCs_Storage, "r") as OCs:
-        _OC_ = json.load(OCs)
-    _OC_[:] = (OC for OC in _OC_ if OC.get('Author') != int(Author_ID))
-    with open(OCs_Storage, "w") as OCs:
-        return json.dump(_OC_, OCs, indent=4)
-def listToString(list): # ~ 6/3/21; June 3, 2021
-    Line_Break = "\n"
-    return Line_Break.join(list)
-def listNumToStr(list): # ~ 6/3/21; June 3, 2021
-    Line_Break = "\n"
-    return Line_Break.join([str(num) for num in list])
+def list_to_string(list, Separator): # ~ 6/3/21; June 3, 2021
+    _Separator_ = str(Separator)
+    return _Separator_.join(list)
+def number_list_to_str(list, Separator): # ~ 6/3/21; June 3, 2021
+    _Separator_ = str(Separator)
+    return _Separator_.join([str(num) for num in list])
+def get_guild(Storage, Guild_ID):
+    with open(Storage, "r") as Data:
+        _Data_ = json.load(Data)
+        return [_Data for _Data in _Data_ if _Data["Guild_ID"] == int(Guild_ID)]
+def edit_warns(Storage, Author_ID, Author_Name, Key): # ~ 6/8/21; June 8, 2021
+    Data = get_author_id(Storage, Author_ID)
+    # print(Data)
+
+    Edited_Data = []
+    with open(Storage, "r") as _Data:
+        _Data_ = json.load(_Data)
+    for Datas in _Data_:
+        if Datas["Member_ID"] == Author_ID:
+            Datas.update(
+                {
+                    "Username": Author_Name,
+                    "Warns": Data[f"{Key}"] + 1,
+                    "Guild_ID": 786716363539611679,
+                    "Member_ID": 782851049316024360,
+                }
+            )
+        Edited_Data.append(Datas)
+    # print(Edited_Data)
+
+    with open(Storage, "w") as _Data:
+        json.dump(Edited_Data, _Data, indent=4)
+def remove_warn(Storage, Author_ID, Author_Name, Key): # ~ 6/8/21; June 8, 2021
+    Data = get_author_id(Storage, Author_ID)
+    # print(Data)
+
+    Edited_Data = []
+    with open(Storage, "r") as _Data:
+        _Data_ = json.load(_Data)
+    for Datas in _Data_:
+        if Datas["Member_ID"] == Author_ID:
+            Datas.update(
+                {
+                    "Username": Author_Name,
+                    "Warns": Data[f"{Key}"] - 1,
+                    "Guild_ID": 786716363539611679,
+                    "Member_ID": 782851049316024360,
+                }
+            )
+        Edited_Data.append(Datas)
+    # print(Edited_Data)
+
+    with open(Storage, "w") as _Data:
+        json.dump(Edited_Data, _Data, indent=4)
+def edit_oc(Storage, Author_ID, OC_ID, Name=None, Avatar=None):
+    Data = get_oc(OC_ID)
+
+    if Data["Author_ID"] != Author_ID:
+        return print(None)
+        
+    Edited_Data = []
+    with open(Storage, "r") as _Data:
+        _Data_ = json.load(_Data)
+    for Datas in _Data_:
+        if Datas["OC_ID"] == OC_ID:
+            Datas.update(
+                {
+                   "Author_ID": Author_ID,
+                   "OC_Name": Data["OC_Name"] if Name is None else Name,
+                   "OC_ID": Datas["OC_ID"],
+                   "OC_Avatar": Data["OC_Avatar"] if Avatar is None else Avatar
+                }
+            )
+        Edited_Data.append(Datas)
+
+    with open(Storage, "w") as _Data:
+        json.dump(Edited_Data, _Data, indent=4)
 
 @client.command()
 async def add_oc(message, *, Name = None):
@@ -283,7 +354,7 @@ async def add_oc(message, *, Name = None):
     with open(OCs_Storage, "r") as _OCs:
         OCs = json.load(_OCs)
         ID = len(OCs) + 1
-    OC["Author"] = message.author.id
+    OC["Author_ID"] = message.author.id
     OC["OC_Name"] = Name
     OC["OC_ID"] = ID
     OC["OC_Avatar"] = Avatar
@@ -312,7 +383,7 @@ async def search_oc(message, *, ID = None):
     OC_Name = OC["OC_Name"]
     OC_ID = OC["OC_ID"]
     OC_Avatar = OC["OC_Avatar"]
-    OC_Author = OC["Author"]
+    OC_Author = OC["Author_ID"]
 
     if OC_Author != message.author.id:
         return await message.send(embed=No_OC)
@@ -339,16 +410,16 @@ async def remove_oc(message, *, ID = None):
         return await message.send(embed=No_OC)
 
     OC_Name = _OC["OC_Name"]
-    OC_Author = _OC["Author"]
+    OC_Author = _OC["Author_ID"]
 
     if OC_Author != message.author.id:
         return await message.send(embed=No_OC)
 
-    Success = discord.Embed(description=f"{OC_Name} has been removed.", color=0x87f587)
+    Success = discord.Embed(description=f"```{OC_Name} has been removed.```", color=0x87f587)
     Success.set_author(name=message.author.name, icon_url=message.author.avatar_url)
     await message.send(embed=Success)
 
-    return delete_oc(ID)
+    return remove_dict(OCs_Storage, "OC_ID", int(ID))
 
 
 @client.command()
@@ -393,7 +464,7 @@ async def list_ocs(message): # ~ 5/25/21; May 25, 2021
 
     OC = get_author(message.author.id)
     # print(OC)
-    if OC is None:
+    if OC == []:
         return await message.send(embed=No_OCs)
 
     # print(OCs["OC_Name"]) ~ 5/25/21; May 25, 2021
@@ -407,9 +478,9 @@ async def list_ocs(message): # ~ 5/25/21; May 25, 2021
         OCs_IDs_ = OCs["OC_ID"]
         _OCs_IDs.append(OCs_IDs_)
 
-    OCs_Names = listToString(_OCs_Names)
+    OCs_Names = list_to_string(_OCs_Names, "\n")
     # print(OCs_Names) ~ 6/3/21; June 3, 2021
-    OCs_IDs = listNumToStr(_OCs_IDs)
+    OCs_IDs = number_list_to_str(_OCs_IDs, "\n")
     
     _OCs_ = discord.Embed(title=f"[ {message.author.name}'s OCs ]", color=0x87f587)
     _OCs_.set_author(name=message.author.name, icon_url=message.author.avatar_url)
@@ -428,10 +499,251 @@ async def clear_ocs(message):
     if OC is None:
         return await message.send(embed=No_OCs)
 
-    delete_ocs(message.author.id)
+    remove_dict(OCs_Storage, "Author_ID", message.author.id)
 
     Success = discord.Embed(description='```Your OCs has been removed.```', color=0x87f587)
     Success.set_author(name=message.author.name, icon_url=message.author.avatar_url)
     return await message.send(embed=Success)
+
+
+@client.command()
+async def flirt(message, member: discord.Member = None):
+    if member:
+        return await message.send(f'{member.mention} {Communication.Flirt()}')
+
+    return await message.send(f'{message.author.mention} {Communication.Flirt()}')
+
+
+@client.command()
+async def insult(message, member: discord.Member = None):
+    if member:
+        return await message.send(f'{member.mention} {Communication.Insult()}')
+
+    return await message.send(f'{message.author.mention} {Communication.Insult()}')
+
+
+@client.command()
+async def roast(message, member: discord.Member = None):
+    if member:
+        return await message.send(f'{member.mention} {Communication.Roast()}')
+
+    return await message.send(f'{message.author.mention} {Communication.Roast()}')
+
+
+@client.command()
+async def annoy(message, member: discord.Member = None, *, args = None):
+    Mention = discord.Embed(title='You need have to mention a user.', description='```R!annoy <User> <Text>```', color=0x87f587)
+    Provide_Message = discord.Embed(title='You have to provide a message for Rune to use.', description='```R!annoy <User> <Text>```', color=0x87f587)
+    
+    if member is None:
+        return await message.send(embed=Mention)
+    if args is None:
+        return await message.send(embed=Provide_Message)
+
+    ID = member.id
+
+    Mentioned = {}
+    with open(Annoys_Storage, "r") as _Mentions:
+        Mentions = json.load(_Mentions)
+        _ID_ = len(Mentions) + 1
+    Mentioned["Username"] = member.name
+    Mentioned["Message"] = args
+    Mentioned["Guild_ID"] = message.guild.id
+    Mentioned["Member_ID"] = ID
+    
+    Check = get_author_id(Annoys_Storage, ID)
+    if Check and (Check["Guild_ID"] == message.guild.id):
+        return await message.send('Already')
+
+    Mentions.append(Mentioned)
+    with open(Annoys_Storage, "w") as _Mentions:
+        json.dump(Mentions, _Mentions, indent=4)
+
+    Success = discord.Embed(description='```All set.```', color=0x87f587)
+    Success.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+    return await message.send(embed=Success)
+
+
+@client.command()
+async def list_annoys(message):
+    No_Annoys = discord.Embed(description='```There are no members that has been assigned to be annoyed.```', color=0x87f587)
+    No_Annoys.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+
+    Guild_Annoys = get_guild(Annoys_Storage, message.guild.id)
+    if Guild_Annoys == []:
+        return await message.send(embed=No_Annoys)
+
+    _Usernames = []
+    for Usernames in Guild_Annoys:
+        Usernames_ = Usernames["Username"]
+        _Usernames.append(Usernames_)
+    
+    _IDs = []
+    for IDs in Guild_Annoys:
+        IDs_ = IDs["Member_ID"]
+        _IDs.append(IDs_)
+
+    _Messages = []
+    for Messages in Guild_Annoys:
+        Messages_ = Messages["Message"]
+        _Messages.append(Messages_)
+
+    _Usernames_ = list_to_string(_Usernames, "\n")
+    _IDs_ = number_list_to_str(_IDs, "\n")
+    _Messages_ = number_list_to_str(_Messages, "\n")
+    
+    Annoys = discord.Embed(title=f"[ {message.guild.name}'s members that are to be annoyed ]", color=0x87f587)
+    Annoys.set_author(name=message.guild.name, icon_url=message.guild.icon_url)
+    Annoys.add_field(name='Username:', value='```\n' + _Usernames_ + '```', inline=True)
+    Annoys.add_field(name='ID:', value='```\n' + _IDs_ + '```', inline=True)
+    Annoys.add_field(name='Message to respond:', value='```\n' + _Messages_ + '```', inline=True)
+    return await message.send(embed=Annoys)
+
+
+@client.command()
+async def unannoy(message, *, ID = None):
+    Provide_ID = discord.Embed(title='You have to provide an ID.', description='```R!unannoy <ID>```', color=0x87f587)
+    if ID is None:
+        return await message.send(embed=Provide_ID)
+
+    _Member = get_author_id(Annoys_Storage, ID)
+
+    No_Member = discord.Embed(description='```There was no member found with that ID.```', color=0x87f587)
+    if _Member is None:
+        return await message.send(embed=No_Member)
+
+    Member_Name = _Member["Username"]
+    Member_Guild = _Member["Guild_ID"]
+
+    if Member_Guild != message.guild.id:
+        return await message.send(embed=No_Member)
+
+    Success = discord.Embed(description=f"```{Member_Name} has been unannoyed; Not to be annoyed anymore.```", color=0x87f587)
+    Success.set_author(name=message.guild.name, icon_url=message.guild.icon_url)
+    await message.send(embed=Success)
+
+    def unannoy(ID):
+        with open(Annoys_Storage, "r") as Annoys:
+            _Annoy_ = json.load(Annoys)
+        _Annoy_[:] = (Annoy for Annoy in _Annoy_ if Annoy.get('Member_ID') != int(ID))
+        with open(Annoys_Storage, "w") as Annoys:
+            return json.dump(_Annoy_, Annoys, indent=4)
+    return unannoy(ID)
+
+
+@client.command()
+async def warn(message, member: discord.Member = None):
+    Mention = discord.Embed(title='You need have to mention a user.', description='```R!warn <User>```', color=0x87f587)
+    if member is None:
+        return await message.send(embed=Mention)
+
+    Author = get_author_id(Warnings_Storage, member.id)
+    if Author is None:
+        Mentioned = {}
+        with open(Warnings_Storage, "r") as _Warnings:
+            Warnings = json.load(_Warnings)
+        Mentioned["Username"] = member.name
+        Mentioned["Warns"] = 1
+        Mentioned["Guild_ID"] = message.guild.id
+        Mentioned["Member_ID"] = member.id
+
+        Warnings.append(Mentioned)
+        with open(Warnings_Storage, "w") as _Warnings:
+            json.dump(Warnings, _Warnings, indent=4)
+
+        Success = discord.Embed(description=f"```{member.name} has been warned, {member.name} has 1 warning.```", color=0x87f587)
+        Success.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+        return await message.send(embed=Success)
+    
+    edit_warns(Warnings_Storage, member.id, member.name, "Warns") # ~ 6/8/21; June 8, 2021
+    
+    Success = discord.Embed(description=f"```{member.name} has been warned, {member.name} now has {Author['Warns'] + 1} warnings.```", color=0x87f587)
+    Success.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+    return await message.send(embed=Success)
+
+
+@client.command()
+async def warns(message):
+    No_Warns = discord.Embed(description='```No one has been warned yet.```', color=0x87f587)
+    No_Warns.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+
+    Guild_Warns = get_guild(Warnings_Storage, message.guild.id)
+    if Guild_Warns == []:
+        return await message.send(embed=No_Warns)
+
+    _Usernames = []
+    for Usernames in Guild_Warns:
+        Usernames_ = Usernames["Username"]
+        _Usernames.append(Usernames_)
+    
+    _IDs = []
+    for IDs in Guild_Warns:
+        IDs_ = IDs["Member_ID"]
+        _IDs.append(IDs_)
+
+    _Warns = []
+    for Warns in Guild_Warns:
+        Warns_ = Warns["Warns"]
+        _Warns.append(Warns_)
+
+    _Usernames_ = list_to_string(_Usernames, "\n")
+    _IDs_ = number_list_to_str(_IDs, "\n")
+    _Warns_ = number_list_to_str(_Warns, "\n")
+    
+    Annoys = discord.Embed(title=f"[ {message.guild.name}'s members that are to be annoyed ]", color=0x87f587)
+    Annoys.set_author(name=message.guild.name, icon_url=message.guild.icon_url)
+    Annoys.add_field(name='Username:', value='```\n' + _Usernames_ + '```', inline=True)
+    Annoys.add_field(name='Warnings:', value='```\n' + _Warns_ + '```', inline=True)
+    Annoys.add_field(name='ID:', value='```\n' + _IDs_ + '```', inline=True)
+    return await message.send(embed=Annoys)
+
+
+@client.command()
+async def unwarn(message, *, ID = None): # ~ 6/8/21; June 8, 2021
+    Provide_ID = discord.Embed(title='You have to provide an ID of a warned member.', description='```R!unwarn <ID>```', color=0x87f587)
+    if ID is None:
+        return await message.send(embed=Provide_ID)
+    if ID == discord.Member:
+        return await message.send(embed=Provide_ID)
+    if type(int(ID)) is not int:
+        return await message.send(embed=Provide_ID)
+
+    ID = int(ID)
+    # print(type(ID))
+
+    _Member = get_author_id(Warnings_Storage, ID)
+
+    No_Member = discord.Embed(description='```There was no member found with that ID.```', color=0x87f587)
+    if _Member is None:
+        return await message.send(embed=No_Member)
+
+    Member_Name = _Member["Username"]
+    Member_Guild = _Member["Guild_ID"]
+    Member_Warnings = _Member["Warns"]
+
+    if Member_Guild != message.guild.id:
+        return await message.send(embed=No_Member)
+
+    if Member_Warnings - 1 == 0:
+        Success = discord.Embed(description=f"```{Member_Name} has been unwarned, {Member_Name} no longer has a warning.```", color=0x87f587)
+        Success.set_author(name=message.guild.name, icon_url=message.guild.icon_url)
+        await message.send(embed=Success)
+
+        Member_Username = client.get_user(ID)
+        return remove_dict(Warnings_Storage, "Member_ID", ID)
+
+    async def Successful(Description):
+        Success = discord.Embed(description=f"```{Description}```", color=0x87f587)
+        Success.set_author(name=message.guild.name, icon_url=message.guild.icon_url)
+        await message.send(embed=Success)
+
+        Member_Username = client.get_user(ID)
+        # print(f"{Member_Name} | {Member_Username.name}")
+
+        return remove_warn(Warnings_Storage, ID, Member_Username.name, "Warns")
+    if Member_Warnings - 1 == 1:
+        return await Successful(f"{Member_Name} has been unwarned, {Member_Name} now has 1 warning.")
+
+    await Successful(f"{Member_Name} has been unwarned, {Member_Name} now has {Member_Warnings - 1} warnings.")
 
 client.run('NzgxMjI0NzU4MzU1ODIwNTU1.X76iQA.r8t22ybi31GM0j3qhhR52485vO4')
