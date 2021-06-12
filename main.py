@@ -862,7 +862,7 @@ async def help(message, args = None):
         Help = discord.Embed(description='```The Prefix for Rune is R!```', color=0x87f587)
         Help.add_field(name='help', value='```Rune will send this.```', inline=True)
         Help.add_field(name='help moderation', value='```Rune will send the list of moderation commands.```', inline=True)
-        Help.add_field(name='help ocs', value='```Rune will send the list of OC/Character commands.```', inline=True)
+        Help.add_field(name='help oc', value='```Rune will send the list of OC/Character commands.```', inline=True)
         Help.add_field(name='ping', value='```Rune will send the amount of miliseconds it takes to send a message; response time.```', inline=True)
         Help.add_field(name='invite', value='```Rune will send his invite link, and all the other links of my projects.```', inline=True)
         Help.add_field(name='say', value='```Rune will repeat the message you want him to say.```', inline=True)
@@ -881,17 +881,17 @@ async def help(message, args = None):
         Help.add_field(name='joke', value='```Rune will send a random joke to you or to a specified member.```', inline=True)
 
         return await message.send(embed=Help)
-    elif args.lower() == 'ocs':
-        Help_OCs = discord.Embed(description='```Here is the list of OC/Character Commands```', color=0x87f587)
-        Help_OCs.add_field(name='add-oc', value='Add an OC/Character.', inline=True)
-        Help_OCs.add_field(name='remove-oc', value='Remove an OC/Character.', inline=True)
-        Help_OCs.add_field(name='oc-say', value='Talk as one of your OCs; Roleplay as your OCs.', inline=True)
-        Help_OCs.add_field(name='list-ocs', value='Rune will send your OC(s)/Character(s).', inline=True)
-        Help_OCs.add_field(name='clear-ocs', value='Remove all of your OCs.', inline=True)
-        Help_OCs.add_field(name='edit-oc-name', value='Edit an OC\'s/Character\'s name.', inline=True)
-        Help_OCs.add_field(name='edit-oc-avatar', value='Edit an OC\'s/Character\'s avatar.', inline=True)
+    elif args.lower() == 'oc':
+        Help_OC = discord.Embed(description='```Here is the list of OC/Character Commands```', color=0x87f587)
+        Help_OC.add_field(name='add-oc', value='Add an OC/Character.', inline=True)
+        Help_OC.add_field(name='remove-oc', value='Remove an OC/Character.', inline=True)
+        Help_OC.add_field(name='oc-say', value='Talk as one of your OCs; Roleplay as your OCs.', inline=True)
+        Help_OC.add_field(name='list-ocs', value='Rune will send your OC(s)/Character(s).', inline=True)
+        Help_OC.add_field(name='clear-ocs', value='Remove all of your OCs.', inline=True)
+        Help_OC.add_field(name='edit-oc-name', value='Edit an OC\'s/Character\'s name.', inline=True)
+        Help_OC.add_field(name='edit-oc-avatar', value='Edit an OC\'s/Character\'s avatar.', inline=True)
 
-        return await message.send(embed=Help_OCs)
+        return await message.send(embed=Help_OC)
     elif args.lower() == 'moderation':
         Help_Moderation = discord.Embed(description='```Here is the list of Moderation Commands```', color=0x87f587)
         Help_Moderation.add_field(name='warn', value='Warn a specified member.', inline=True)
