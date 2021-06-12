@@ -564,7 +564,6 @@ async def annoy(message, member: discord.Member = None, *, args = None):
     Mentioned = {}
     with open(Annoys_Storage, "r") as _Mentions:
         Mentions = json.load(_Mentions)
-        _ID_ = len(Mentions) + 1
     Mentioned["Username"] = member.name
     Mentioned["Message"] = args
     Mentioned["Guild_ID"] = message.guild.id
@@ -753,7 +752,6 @@ async def unwarn(message, *, ID = None): # ~ 6/8/21; June 8, 2021
         Success.set_author(name=message.guild.name, icon_url=message.guild.icon_url)
         await message.send(embed=Success)
 
-        Member_Username = client.get_user(ID)
         return remove_dict(Warnings_Storage, "Member_ID", ID)
 
     async def Successful(Description):
