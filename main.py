@@ -20,7 +20,7 @@ from Exports import Communication
 intents = discord.Intents.default()
 intents.members = True
 
-client = commands.Bot(command_prefix='R!', intents=intents)
+client = commands.Bot(command_prefix='R!', intents=intents, help_command=None)
 vac = vacefron.Client()
 
 def get_author_id(Storage, Author_ID):
@@ -94,10 +94,8 @@ async def on_command_error(message, error):
     async def no_permission(response):
         if isinstance(error, MissingPermissions):
             return await message.send(embed=response)
-    Require = discord.Embed(
-        title='You have to follow the requirements.', color=0x87f587)
-    No_Permission = discord.Embed(
-        title='You don\'t have the permission to use this command.', color=0x87f587)
+    Require = discord.Embed(description='```You have to follow the requirements.```', color=0x87f587)
+    No_Permission = discord.Embed(description='```You don\'t have the permission(s) to use this command.```', color=0x87f587)
 
     await invalid_user(Require)
     await invalid_channel(Require)
@@ -140,7 +138,7 @@ async def owofy(message, *, args = None):
     return await message.send(Message_To_OwOfy)
 
 
-@client.command()
+@client.command(name="clap-text")
 async def clap_text(message, *, args = None):
     Provide = discord.Embed(title='You have to provide a message for Rune to clap text.', description='```R!clap_text <Text>```', color=0x87f587)
 
@@ -175,7 +173,7 @@ async def iq(message):
     return await message.send(embed=IQ)
 
 
-@client.command()
+@client.command(name="sparkles-text")
 async def sparkles_text(message, *, args = None):
     Provide = discord.Embed(title='You have to provide a message for Rune to sparkles text.', description='```R!sparkles_text <Text>```', color=0x87f587)
 
@@ -188,7 +186,7 @@ async def sparkles_text(message, *, args = None):
     return await message.send(Sparkles_Text)
 
 
-@client.command()
+@client.command(name="sparkle-text")
 async def sparkle_text(message, *, args = None):
     Provide = discord.Embed(title='You have to provide a message for Rune to sparkle text.', description='```R!sparkle_text <Text>```', color=0x87f587)
 
@@ -199,7 +197,7 @@ async def sparkle_text(message, *, args = None):
     return await message.send(Sparkle_Text)
 
 
-@client.command()
+@client.command(name="say-in")
 async def say_in(message, channel: discord.TextChannel = None, *, args = None):
     Mention = discord.Embed('You need to mention a channel for Rune to say in.', description='```R!say_in <Channel> <Text>```', color=0x87f587)
     Provide_Message = discord.Embed(title='You have to provide a message for Rune to say.', description='```R!say_in <Channel> <Text>```', color=0x87f587)
@@ -225,7 +223,7 @@ async def compliment(message, member: discord.Member = None):
     return await message.send(f'{message.author.mention} {Communication.Compliment()}')
 
 
-@client.command()
+@client.command(name="say-to")
 @has_permissions(manage_messages=True)
 async def say_to(message, member: discord.Member = None, *, args = None):
     Mention = discord.Embed(title='You need have to mention a user.', description='```R!say_to <User> <Text>```', color=0x87f587)
@@ -258,7 +256,7 @@ def remove_dict(Storage, Key, Value):
 def get_author(Author_ID):
     with open(OCs_Storage, "r") as OCs:
         _OC_ = json.load(OCs)
-        return [_OC for _OC in _OC_ if _OC["Author"] == int(Author_ID)]
+        return [_OC for _OC in _OC_ if _OC["Author_ID"] == int(Author_ID)]
 def list_to_string(list, Separator): # ~ 6/3/21; June 3, 2021
     _Separator_ = str(Separator)
     return _Separator_.join(list)
@@ -317,7 +315,7 @@ def edit_oc(Storage, Author_ID, OC_ID, Name=None, Avatar=None):
     Data = get_oc(OC_ID)
 
     if Data["Author_ID"] != Author_ID:
-        return print(None)
+        return None
         
     Edited_Data = []
     with open(Storage, "r") as _Data:
@@ -337,10 +335,10 @@ def edit_oc(Storage, Author_ID, OC_ID, Name=None, Avatar=None):
     with open(Storage, "w") as _Data:
         json.dump(Edited_Data, _Data, indent=4)
 
-@client.command()
-async def add_oc(message, *, Name = None):
-    Provide_Name = discord.Embed(title='You have to provide the name for your OC.', description='```R!add_oc <Name> [Avatar]```', color=0x87f587)
-    Provide_Avatar = discord.Embed(title='You have to provide the avatar for your OC.', description='```R!add_oc <Name> [Avatar]```', color=0x87f587)
+@client.command(name="add-oc")
+async def add_oc(message, *, Name = None):  
+    Provide_Name = discord.Embed(title='You have to provide the name for your OC.', description='```R!add_oc <Name> [Attachment]```', color=0x87f587)
+    Provide_Avatar = discord.Embed(title='You have to provide the avatar for your OC.', description='```R!add_oc <Name> [Attachment]```', color=0x87f587)
 
     Avatar = None if len(message.message.attachments) == 0 else message.message.attachments[0].url
     # print(Avatar)
@@ -368,8 +366,15 @@ async def add_oc(message, *, Name = None):
     return await message.send(message.author.mention, embed=Success)
 
 
-@client.command()
+@client.command(name="search-oc")
 async def search_oc(message, *, ID = None):
+    No_OCs = discord.Embed(description='```You don\'t have any OCs yet.```', color=0x87f587)
+    No_OCs.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+
+    Author_Check = get_author(message.author.id)
+    if Author_Check is None:
+        return await message.send(embed=No_OCs)
+
     Provide_ID = discord.Embed(title='You have to provide the ID of the OC you want to search for.', description='```R!search_oc <ID>```', color=0x87f587)
     if ID is None:
         return await message.send(embed=Provide_ID)
@@ -397,8 +402,15 @@ async def search_oc(message, *, ID = None):
     return await message.send(embed=OC_)
 
 
-@client.command()
+@client.command(name="remove-oc")
 async def remove_oc(message, *, ID = None):
+    No_OCs = discord.Embed(description='```You don\'t have any OCs yet.```', color=0x87f587)
+    No_OCs.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+
+    Author_Check = get_author(message.author.id)
+    if Author_Check is None:
+        return await message.send(embed=No_OCs)
+
     Provide_ID = discord.Embed(title='You have to provide the ID of the OC you want to remove.', description='```R!remove_oc <ID>```', color=0x87f587)
     if ID is None:
         return await message.send(embed=Provide_ID)
@@ -422,10 +434,17 @@ async def remove_oc(message, *, ID = None):
     return remove_dict(OCs_Storage, "OC_ID", int(ID))
 
 
-@client.command()
+@client.command(name="oc-say")
 async def oc_say(message, ID = None, *, args = None):
+    No_OCs = discord.Embed(description='```You don\'t have any OCs yet.```', color=0x87f587)
+    No_OCs.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+
+    Author_Check = get_author(message.author.id)
+    if Author_Check is None:
+        return await message.send(embed=No_OCs)
+
     Provide_ID = discord.Embed(title='You have to provide the ID of the OC you want to talk as.', description='```R!oc_say <ID> <Message>```', color=0x87f587)
-    Provide_ID = discord.Embed(title='You have to provide a message for your OC to say.', description='```R!oc_say <ID> <Message>```', color=0x87f587)
+    Provide_Message = discord.Embed(title='You have to provide a message for your OC to say.', description='```R!oc_say <ID> <Message>```', color=0x87f587)
 
     if ID is None:
         return await message.send(embed=Provide_ID)
@@ -437,12 +456,11 @@ async def oc_say(message, ID = None, *, args = None):
         return await message.send(embed=No_OC)
 
     OC_Name = OC["OC_Name"]
-    OC_Author = OC["Author"]
+    OC_Author = OC["Author_ID"]
     OC_Avatar = OC["OC_Avatar"]
 
     if OC_Author != message.author.id:
         return await message.send(embed=No_OC)
-
     if args is None:
         return await message.send(embed=Provide_Message)
     
@@ -457,7 +475,7 @@ async def oc_say(message, ID = None, *, args = None):
     return await _OC_.delete()
 
 
-@client.command()
+@client.command(name="list-ocs")
 async def list_ocs(message): # ~ 5/25/21; May 25, 2021
     No_OCs = discord.Embed(description='```You don\'t have any OCs yet.```', color=0x87f587)
     No_OCs.set_author(name=message.author.name, icon_url=message.author.avatar_url)
@@ -490,7 +508,7 @@ async def list_ocs(message): # ~ 5/25/21; May 25, 2021
     return await message.send(embed=_OCs_)
 
 
-@client.command()
+@client.command(name="clear-ocs")
 async def clear_ocs(message):
     No_OCs = discord.Embed(description='```You don\'t have any OCs yet.```', color=0x87f587)
     No_OCs.set_author(name=message.author.name, icon_url=message.author.avatar_url)
@@ -511,7 +529,7 @@ async def flirt(message, member: discord.Member = None):
     if member:
         return await message.send(f'{member.mention} {Communication.Flirt()}')
 
-    return await message.send(f'{message.author.mention} {Communication.Flirt()}')
+    return await message.send(Communication.Flirt())
 
 
 @client.command()
@@ -531,6 +549,7 @@ async def roast(message, member: discord.Member = None):
 
 
 @client.command()
+@has_permissions(manage_guild=True)
 async def annoy(message, member: discord.Member = None, *, args = None):
     Mention = discord.Embed(title='You need have to mention a user.', description='```R!annoy <User> <Text>```', color=0x87f587)
     Provide_Message = discord.Embed(title='You have to provide a message for Rune to use.', description='```R!annoy <User> <Text>```', color=0x87f587)
@@ -564,7 +583,8 @@ async def annoy(message, member: discord.Member = None, *, args = None):
     return await message.send(embed=Success)
 
 
-@client.command()
+@client.command(name="list-annoys")
+@has_permissions(manage_guild=True)
 async def list_annoys(message):
     No_Annoys = discord.Embed(description='```There are no members that has been assigned to be annoyed.```', color=0x87f587)
     No_Annoys.set_author(name=message.author.name, icon_url=message.author.avatar_url)
@@ -601,6 +621,7 @@ async def list_annoys(message):
 
 
 @client.command()
+@has_permissions(manage_guild=True)
 async def unannoy(message, *, ID = None):
     Provide_ID = discord.Embed(title='You have to provide an ID.', description='```R!unannoy <ID>```', color=0x87f587)
     if ID is None:
@@ -632,6 +653,7 @@ async def unannoy(message, *, ID = None):
 
 
 @client.command()
+@has_permissions(administrator=True)
 async def warn(message, member: discord.Member = None):
     Mention = discord.Embed(title='You need have to mention a user.', description='```R!warn <User>```', color=0x87f587)
     if member is None:
@@ -663,6 +685,7 @@ async def warn(message, member: discord.Member = None):
 
 
 @client.command()
+@has_permissions(administrator=True)
 async def warns(message):
     No_Warns = discord.Embed(description='```No one has been warned yet.```', color=0x87f587)
     No_Warns.set_author(name=message.author.name, icon_url=message.author.avatar_url)
@@ -699,6 +722,7 @@ async def warns(message):
 
 
 @client.command()
+@has_permissions(administrator=True)
 async def unwarn(message, *, ID = None): # ~ 6/8/21; June 8, 2021
     Provide_ID = discord.Embed(title='You have to provide an ID of a warned member.', description='```R!unwarn <ID>```', color=0x87f587)
     if ID is None:
@@ -745,5 +769,141 @@ async def unwarn(message, *, ID = None): # ~ 6/8/21; June 8, 2021
         return await Successful(f"{Member_Name} has been unwarned, {Member_Name} now has 1 warning.")
 
     await Successful(f"{Member_Name} has been unwarned, {Member_Name} now has {Member_Warnings - 1} warnings.")
+
+
+@client.command(name="edit-oc-name")
+async def edit_oc_name(message, ID = None, *, args = None):
+    No_OCs = discord.Embed(description='```You don\'t have any OCs yet.```', color=0x87f587)
+    No_OCs.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+
+    Author_Check = get_author(message.author.id)
+    if Author_Check is None:
+        return await message.send(embed=No_OCs)
+
+    Provide_ID = discord.Embed(title='You have to provide an ID.', description='```R!edit_oc_name <ID> <Name>```', color=0x87f587)
+    Provide_Name = discord.Embed(title='You have to provide a name for your OC.', description='```R!edit_oc_name <ID> <Name>```', color=0x87f587)    
+    if ID is None:
+        return await message.send(embed=Provide_ID)
+    
+    No_OC = discord.Embed(description='```There is no OC that you own with that ID.```', color=0x87f587)
+
+    ID = int(ID)
+    OC = get_oc(ID)
+    if OC is None:
+        return await message.send(embed=No_OC)
+
+    OC_Name = OC["OC_Name"]
+    OC_Avatar = OC["OC_Avatar"]
+    OC_Author = OC["Author_ID"]
+
+    # print(OC_Name)
+    # print(OC_ID)
+    # print(OC_Avatar)
+    # print(OC_Author)
+
+    if OC_Author != message.author.id:
+        return await message.send(embed=No_OC)
+
+    if args is None:
+        return await message.send(embed=Provide_Name)
+
+    Success = discord.Embed(description=f"```{OC_Name}'s name has been changed to {args}.```", color=0x87f587)
+    Success.set_author(name=args, icon_url=OC_Avatar)
+    await message.send(embed=Success)
+
+    edit_oc(OCs_Storage, message.author.id, ID, Name=args)
+
+
+@client.command(name="edit-oc-avatar")
+async def edit_oc_avatar(message, ID = None, *, args = None):
+    No_OCs = discord.Embed(description='```You don\'t have any OCs yet.```', color=0x87f587)
+    No_OCs.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+
+    Author_Check = get_author(message.author.id)
+    if Author_Check is None:
+        return await message.send(embed=No_OCs)
+
+    Provide_ID = discord.Embed(title='You have to provide an ID.', description='```R!edit_oc_avatar <ID> [Attachment]```', color=0x87f587)
+    Provide_Name = discord.Embed(title='You have to provide an avatar for your OC.', description='```R!edit_oc_avatar <ID> [Attachment]```', color=0x87f587)    
+    if ID is None:
+        return await message.send(embed=Provide_ID)
+
+    No_OC = discord.Embed(description='```There is no OC that you own with that ID.```', color=0x87f587)
+
+    ID = int(ID)
+    OC = get_oc(ID)
+    if OC is None:
+        return await message.send(embed=No_OC)
+
+    OC_Name = OC["OC_Name"]
+    OC_Author = OC["Author_ID"]
+
+    No_OC = discord.Embed(description='```There is no OC that you own with that ID.```', color=0x87f587)
+    if OC_Author != message.author.id:
+        return await message.send(embed=No_OC)
+
+    Avatar = None if len(message.message.attachments) == 0 else message.message.attachments[0].url
+    if Avatar is None:
+        return await message.send(embed=Provide_Name)
+
+    Success = discord.Embed(description=f"```{OC_Name}'s avatar has been changed.```", color=0x87f587)
+    Success.set_author(name=OC_Name, icon_url=Avatar)
+    await message.send(embed=Success)
+
+    edit_oc(OCs_Storage, message.author.id, ID, Avatar=Avatar)
+
+
+@client.command()
+async def joke(message):
+    return await message.send(Communication.Joke())
+
+
+@client.command()
+async def help(message, args = None):
+    if args is None:
+        Help = discord.Embed(description='```The Prefix for Rune is R!```', color=0x87f587)
+        Help.add_field(name='help', value='```Rune will send this.```', inline=True)
+        Help.add_field(name='help moderation', value='```Rune will send the list of moderation commands.```', inline=True)
+        Help.add_field(name='help ocs', value='```Rune will send the list of OC/Character commands.```', inline=True)
+        Help.add_field(name='ping', value='```Rune will send the amount of miliseconds it takes to send a message; response time.```', inline=True)
+        Help.add_field(name='invite', value='```Rune will send his invite link, and all the other links of my projects.```', inline=True)
+        Help.add_field(name='say', value='```Rune will repeat the message you want him to say.```', inline=True)
+        Help.add_field(name='say-in', value='```Rune will say the message you want to send in a channel.```', inline=True)
+        Help.add_field(name='say-to', value='```Rune will say the message you want to send to a specified member.```', inline=True)
+        Help.add_field(name='iq', value='```Rune will send your iq.```', inline=True)
+        Help.add_field(name='owofy', value='```Wune wiww twanswate and send youw message wike this.```', inline=True)
+        Help.add_field(name='clap-text', value='```Rune 👏 will 👏 turn 👏 and 👏 send 👏 your 👏 message 👏 like 👏 this.```', inline=True)
+        Help.add_field(name='sparkles-text', value='```✨ Rune ✨ will ✨ turn ✨ and ✨ send ✨ your ✨ message ✨ like ✨ this. ✨.```', inline=True)
+        Help.add_field(name='sparkle-text', value='```✨ Rune will turn and send your message like this. ✨```', inline=True)
+        Help.add_field(name='eject', value='```Eject a specified member.```', inline=True)
+        Help.add_field(name='compliment', value='```Rune will send a random compliment to you or to a specified member.```', inline=True)
+        Help.add_field(name='insult', value='```Rune will send a random insult to you or to a specified member.```', inline=True)
+        Help.add_field(name='flirt', value='```Rune will send a random flirt or to a specified member.```', inline=True)
+        Help.add_field(name='roast', value='```Rune will send a random roast/comeback to you or to a specified member.```', inline=True)
+        Help.add_field(name='joke', value='```Rune will send a random joke to you or to a specified member.```', inline=True)
+
+        return await message.send(embed=Help)
+    elif args.lower() == 'ocs':
+        Help_OCs = discord.Embed(description='```Here is the list of OC/Character Commands```', color=0x87f587)
+        Help_OCs.add_field(name='add-oc', value='Add an OC/Character.', inline=True)
+        Help_OCs.add_field(name='remove-oc', value='Remove an OC/Character.', inline=True)
+        Help_OCs.add_field(name='oc-say', value='Talk as one of your OCs; Roleplay as your OCs.', inline=True)
+        Help_OCs.add_field(name='list-ocs', value='Rune will send your OC(s)/Character(s).', inline=True)
+        Help_OCs.add_field(name='clear-ocs', value='Remove all of your OCs.', inline=True)
+        Help_OCs.add_field(name='edit-oc-name', value='Edit an OC\'s/Character\'s name.', inline=True)
+        Help_OCs.add_field(name='edit-oc-avatar', value='Edit an OC\'s/Character\'s avatar.', inline=True)
+
+        return await message.send(embed=Help_OCs)
+    elif args.lower() == 'moderation':
+        Help_Moderation = discord.Embed(description='```Here is the list of Moderation Commands```', color=0x87f587)
+        Help_Moderation.add_field(name='warn', value='Warn a specified member.', inline=True)
+        Help_Moderation.add_field(name='warns', value='Rune will send all of the warns of warned members/a warned member.', inline=True)
+        Help_Moderation.add_field(name='unwarn', value='Remove a warn from a specifed member.', inline=True)
+        Help_Moderation.add_field(name='annnoy', value='Rune will annoy a member; Sends the specified message everytime the specified member sends a message.', inline=True)
+        Help_Moderation.add_field(name='annoys', value='Rune will send the member/all of the members that are to be annoyed.', inline=True)
+        Help_Moderation.add_field(name='unannoy', value='Remove a specifed member from the annoy list.', inline=True)
+
+        return await message.send(embed=Help_Moderation)
+
 
 client.run('NzgxMjI0NzU4MzU1ODIwNTU1.X76iQA.r8t22ybi31GM0j3qhhR52485vO4')

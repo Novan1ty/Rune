@@ -342,3 +342,39 @@ def Roast():
         '||I need you,|| ||i want you,|| ||to go away.||',
     ]
     return random.choice(Comebacks).lower().capitalize()
+
+def Joke():
+    """
+    Gives a random joke.
+    @exmaple
+    print(Communication.Joke())
+    """
+    Jokes = [
+        "I invented a new word, ||plagiarism.||",
+        "Did you hear about the mathematician who’s afraid of negative numbers? He’ll stop at nothing to avoid them.",
+        "Why do we tell actors to “break a leg?” ||Because every play has a cast.||",
+        "Did you hear about the actor who fell through the floorboards? He was just going through a stage.",
+        "Why don’t scientists trust atoms? ||Because they make up everything.||",
+        "How do you keep a bagel from getting away? ||Put lox on it.||",
+        "Give a man a gun and he’ll rob a bank, give a man a bank and he’ll rob everyone. Facts.",
+        "Why do police get to protests early? ||To beat the crowd.||",
+        "We all know when we see an answer online, we always go:\n\"Roses are Red, Violets are Blue, Ctrl + C, Ctrl + V.\"",
+        "Making an advance or next level art is pretty painful, it kind of reminds me of myself actually.",
+        "If you have a friend that has a big brain; Has next level knowledge. All you have to do is interrupt them and yell \"BORING~ SHUT UP, NERD.\"",
+        "When you put a bed in your bedroom – you have less bedroom.",
+        "99.8% of peoples have problems with math. And oh boy, i’m glad i’m in the remaining 1%.",
+        "I haven’t been sleeping well recently. Well, that's it for my last talent.",
+        "How do you know the ocean greets you? ||It waves.||",
+        "Did you hear about the first restaurant to open on the moon? ||It had great food, but no atmosphere.||",
+        "Why should you never trust stairs? ||They're always up to something.||",
+        "How do you measure a snake? In inch, ||they don't have feets.||",
+        "I told my friends some jokes to make them laugh. Sadly, ||no pun in ten did.||",
+        "What do you call a fake noodle? ||An impasta.||",
+        "If someone asks for your name or real name, just respond \"Non-ya\". And if they said \"Non-ya?\", reply \"Non ya' business.\"",
+        "Fact: You just wasted your time reading sentence saying \"You just wasted your time reading sentence~\" and so on.",
+        "Welcome to another episode of *why are you asking a joke from me.*",
+        "Alright my left kidney has been sold, but we don't really talk about it.. around these parts...",
+        "You got to learn from my 2 friends, ||Ctrl C|| and ||Ctrl V.||",
+        "Spell Pneumonoultramicroscopicsililcovolcanoconiosis before press this -> ||What did i just say.|| ||Stop using what you learned from Ctrl C and Ctrl V.||"
+    ]
+    return random.choice(Jokes)
