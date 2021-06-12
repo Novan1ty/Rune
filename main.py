@@ -115,7 +115,7 @@ async def say(Rune, *, args = None):
     Provide_Message.set_author(name=Rune.author.name, icon_url=Rune.author.avatar_url)
 
     if args is None:
-        return await Rune.send(embed=Provide)
+        return await Rune.send(embed=Provide_Message)
 
     return await Rune.send(args)
 
