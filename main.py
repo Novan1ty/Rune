@@ -112,7 +112,7 @@ async def ping(Rune):
 @client.command()
 async def say(Rune, *, args = None):
     Provide_Message = discord.Embed(title='You have to provide a message for Rune to say.', description='```R!add_oc <Name> [Avatar]```', color=0x87f587)
-    Provide_Message.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+    Provide_Message.set_author(name=Rune.author.name, icon_url=Rune.author.avatar_url)
 
     if args is None:
         return await Rune.send(embed=Provide)
