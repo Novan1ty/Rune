@@ -949,4 +949,12 @@ async def help(message, args = None):
         return await message.send(embed=Help_Moderation)
 
 
+@client.command()
+async def invite(message):
+    Invite = discord.Embed(title='Links', description="[Rune's Invite Link](https://discord.com/oauth2/authorize?client_id=781224758355820555&permissions=8&scope=bot)\n[Discord Server Invite Link](https://discord.io/TheTalk)", color=0x87f587)
+    Invite.add_field(name='Incompletes', value="[Mitch's Invite Link](https://discord.com/oauth2/authorize?client_id=786702998998482955&permissions=8&scope=bot)\n[Nova's Invite Link](https://discord.com/api/oauth2/authorize?client_id=813290586085261322&permissions=8&scope=bot)\n[Rea's Invite Link](https://discord.com/oauth2/authorize?client_id=843626815498879067&permissions=8&scope=bot)")
+    
+    return await message.send(embed=Invite)
+
+
 client.run('NzgxMjI0NzU4MzU1ODIwNTU1.X76iQA.r8t22ybi31GM0j3qhhR52485vO4')
