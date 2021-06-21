@@ -1,3 +1,4 @@
+import os
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
@@ -957,4 +958,4 @@ async def invite(message):
     return await message.send(embed=Invite)
 
 
-client.run('NzgxMjI0NzU4MzU1ODIwNTU1.X76iQA.r8t22ybi31GM0j3qhhR52485vO4')
+client.run(os.environ['Token'])
