@@ -597,10 +597,10 @@ async def annoy(message, member: discord.Member = None, *, args = None):
 
     Already = discord.Embed(description=f"{member.name} has already been set to be annoyed.", color=0x87f587)
     Already.set_author(name=message.author.name, icon_url=message.author.avatar_url)
-    
+
     Check = get_author_id(Annoys_Storage, ID)
     if Check and (Check["Guild_ID"] == message.guild.id):
-        return await message.send('Already')
+        return await message.send(embed=Already)
 
     Mentions.append(Mentioned)
     with open(Annoys_Storage, "w") as _Mentions:

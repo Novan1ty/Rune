@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "repl_python3_Rune-Discordpy"
-version = "0.1.1"
-description = ""
+name = "Rune-Python"
+version = "1.0.3"
+description = "Rune is a small project where the goal is to recreate JSON as a database."
 authors = ["Novan1ty <<>>"]
 
 [tool.poetry.dependencies]
