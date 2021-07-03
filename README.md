@@ -18,6 +18,29 @@ Creator: `Novanity#1148`
 
 - - -
 
+## Main Commands
+* R!help
+* R!help moderation
+* R!help oc
+* R!invite
+* R!ping
+* R!say
+* R!say-in
+* R!say-to
+* R!iq
+* R!owofy
+* R!clap-text
+* R!sparkles-text
+* R!sparkle-text
+* R!eject
+* R!compliment
+* R!insult
+* R!flirt
+* R!roast
+* R!joke
+
+- - -
+
 ## ***Update ~ May 2, 2021***
 The Recreation of JSON as a Database in Python has been cancelled; Characters Feature has been cancelled.
 
