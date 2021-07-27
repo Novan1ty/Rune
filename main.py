@@ -1,3 +1,4 @@
+import os
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
@@ -16,7 +17,6 @@ import json
 import time
 import requests
 from Exports import Communication
-import os
 
 intents = discord.Intents.default()
 intents.members = True
@@ -913,7 +913,6 @@ async def help(message, args = None):
         Help.add_field(name='invite', value='```Rune will send his invite link, and all the other links of my projects.```', inline=True)
         Help.add_field(name='say', value='```Rune will repeat the message you want him to say.```', inline=True)
         Help.add_field(name='say-in', value='```Rune will say the message you want to send in a channel.```', inline=True)
-        Help.add_field(name='say-to', value='```Rune will say the message you want to send to a specified member.```', inline=True)
         Help.add_field(name='iq', value='```Rune will send your iq.```', inline=True)
         Help.add_field(name='owofy', value='```Wune wiww twanswate and send youw message wike this.```', inline=True)
         Help.add_field(name='clap-text', value='```Rune 👏 will 👏 turn 👏 and 👏 send 👏 your 👏 message 👏 like 👏 this.```', inline=True)
