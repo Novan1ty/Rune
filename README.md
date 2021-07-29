@@ -19,30 +19,33 @@ Creator: `Novanity#1148`
 - - -
 
 ## Features
-* OC/Character
-* Warn System
-* Annoy System
+* **OC/Character**
+![OC/Character](./Assets/OC-Character.jpg)
+* **Warn System**
+![Warn System](./Assets/Warn_System.jpg)
+* **Annoy System**
+![Annoy System](./Assets/Annoy_System.jpg)
 
 ## Main Commands
-* R!help
-* R!help moderation
-* R!help oc
-* R!invite
-* R!ping
-* R!say
-* R!say-in
-* R!say-to
-* R!iq
-* R!owofy
-* R!clap-text
-* R!sparkles-text
-* R!sparkle-text
-* R!eject
-* R!compliment
-* R!insult
-* R!flirt
-* R!roast
-* R!joke
+* `R!help`
+* `R!help moderation`
+* `R!help oc`
+* `R!invite`
+* `R!ping`
+* `R!say`
+* `R!say-in`
+* `R!say-to`
+* `R!iq`
+* `R!owofy`
+* `R!clap-text`
+* `R!sparkles-text`
+* `R!sparkle-text`
+* `R!eject`
+* `R!compliment`
+* `R!insult`
+* `R!flirt`
+* `R!roast`
+* `R!joke`
 
 - - -
 

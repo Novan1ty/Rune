@@ -957,4 +957,4 @@ async def invite(message):
     return await message.send(embed=Invite)
 
 
-client.run("Some Token")
+client.run(os.environ['Token'])
