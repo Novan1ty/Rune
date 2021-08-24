@@ -943,7 +943,7 @@ async def help(message, args = None):
         Help_Moderation.add_field(name='warns', value='```Rune will send all of the warns of warned members/a warned member.```', inline=True)
         Help_Moderation.add_field(name='unwarn', value='```Remove a warn from a specifed member.```', inline=True)
         Help_Moderation.add_field(name='annnoy', value='```Rune will annoy a member; Sends the specified message everytime the specified member sends a message.```', inline=True)
-        Help_Moderation.add_field(name='annoys', value='```Rune will send the member/all of the members that are to be annoyed.```', inline=True)
+        Help_Moderation.add_field(name='list-annoys', value='```Rune will send the member/all of the members that are to be annoyed.```', inline=True)
         Help_Moderation.add_field(name='unannoy', value='```Remove a specifed member from the annoy list.```', inline=True)
 
         return await message.send(embed=Help_Moderation)
