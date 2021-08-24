@@ -136,9 +136,9 @@ async def owofy(message, *, args = None):
     ur = R.replace("ur", "ow")
     UR = ur.replace("UR", "OW")
     ove = UR.replace("ove", "uv")
-    Message_To_OwOfy = ove.replace("OVE", "UV")
+    owofy = ove.replace("OVE", "UV")
 
-    return await message.send(Message_To_OwOfy)
+    return await message.send(owofy)
 
 
 @client.command(name="clap-text")
