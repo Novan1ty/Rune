@@ -21,10 +21,10 @@ Creator: `Novanity#1148`
 ## Features
 - OC/Character
     - ![OC/Character](./Assets/OC-Character.jpg)
-- Warn System
-    - ![Warn System](./Assets/Warn_System.jpg)
 - Annoy System
     - ![Annoy System](./Assets/Annoy_System.jpg)
+- Warn System
+    - ![Warn System](./Assets/Warn_System.jpg)
 
 ## Main Commands
 
