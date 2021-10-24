@@ -4,7 +4,7 @@
 Rune is a bot that jokes around the server and also has a few features.
 
 ## About
-**Rune is now a small project for recreating a small amount of commands that i have in my bot named °Mitch°•.**
+Rune is now a small project for recreating a small amount of commands that i have in my bot named °Mitch°•.
 
 Creator: `Novanity#1148`
 
@@ -49,14 +49,16 @@ Creator: `Novanity#1148`
 
 - - -
 
-## ***Update ~ May 2, 2021***
-The Recreation of JSON as a Database in Python has been cancelled; Characters Feature has been cancelled.
+## Updates
 
-## ***Update ~ May 7, 2021***
-The Recreation of JSON as a Database in Python has been recontinued, and the reasons are:
-* I've researched more and deep into the vast of internet.
-* I figured out and found more tricks to make this as simple like Javascript.
-* Started to study more about Classic Python.
+- ### May 2, 2021
+    - The Recreation of JSON as a Database in Python has been cancelled; Characters Feature has been cancelled.
 
-## ***Update ~ June 12, 2021***
-Rune is now finished, i still might update Rune, but for now i got to go finish my other projects.
+- ### May 7, 2021
+    - The Recreation of JSON as a Database in Python has been recontinued, and the reasons are:
+        - I've researched more and deep into the vast of internet.
+        - I figured out and found more tricks to make this as simple like Javascript.
+        - Started to study more about Classic Python.
+
+- ### June 12, 2021
+    - Rune is now finished, i still might update Rune, but for now i got to go finish my other projects.
