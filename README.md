@@ -1,4 +1,4 @@
-# Rune-Python
+# Rune
 
 ## Description
 Rune is a bot that jokes around the server and also has a few features.
