@@ -19,13 +19,8 @@ Creator: `Novanity#1148`
 - - -
 
 ## Features
-<<<<<<< HEAD
 - Character
     - ![Character](./Assets/Character.jpg)
-=======
-- OC/Character
-    - ![OC/Character](./Assets/OC-Character.jpg)
->>>>>>> origin/main
 - Annoy System
     - ![Annoy System](./Assets/Annoy_System.jpg)
 - Warn System
@@ -67,8 +62,4 @@ Creator: `Novanity#1148`
         - Started to study more about Classic Python.
 
 - ### June 12, 2021
-<<<<<<< HEAD
     - Rune is now finished, i still might update Rune, but for now i got to go finish my other projects.
-=======
-    - Rune is now finished, i still might update Rune, but for now i got to go finish my other projects.
->>>>>>> origin/main
