@@ -9,7 +9,7 @@ def Start():
     return Rune
 
 def Run():
-    App.run(host='0.0.0.0', port=8080)
+    App.run(host='0.0.0.0', port=5656)
 
 def Get_Port():
     The_Thread = Thread(target=Run)
