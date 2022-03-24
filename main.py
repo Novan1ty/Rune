@@ -106,7 +106,11 @@ async def on_command_error(message, error):
 
 @client.command()
 async def ping(Rune):
-    Ping = discord.Embed(title="Pong! 🏓", description=f"Latency: `{round(client.latency * 1000)}ms`", color=0x87f587)
+    Ping = discord.Embed(
+        title="Pong! 🏓",
+        description=f"```Latency: {round(client.latency * 1000)}ms```",
+        color=0x87f587
+    )
     return await Rune.send(embed=Ping)
 
 
