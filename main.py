@@ -51,18 +51,6 @@ async def on_ready():
 
 
 @client.event
-async def on_member_join(Member):
-    channel = client.get_channel(804229608500232230)
-    await channel.send('Welcome.')
- 
-
-@client.event
-async def on_member_remove(Member):
-    channel = client.get_channel(804229608500232230)
-    await channel.send('Bye.')
-
-
-@client.event
 async def pog(message):
     if message.content.lower() == 'pog':
         await message.add_reaction('🇵')
